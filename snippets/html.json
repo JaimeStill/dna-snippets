@@ -1,0 +1,17 @@
+{
+    "Dialog Template": {
+        "prefix": [ "dna.dialog" ],
+        "body": [
+            "<div class=\"mat-typography\">",
+                "\t<h2 mat-dialog-title>${1:title}</h2>",
+                "\t<mat-dialog-content>",
+                    "\t\t$0",
+                "\t</mat-dialog-content>",
+                "\t<mat-dialog-actions>",
+                    "\t\t<button mat-button",
+                        "\t\t\tmat-dialog-close>Cancel</button>",
+                "\t</mat-dialog-actions>",
+            "</div>"
+        ]
+    }
+}

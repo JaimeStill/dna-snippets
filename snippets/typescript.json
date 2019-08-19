@@ -1,0 +1,195 @@
+{
+    "Model Interface": {
+        "prefix": [ "dna.model" ],
+        "body": [
+            "export interface ${1:Model} {",
+                "\tid: number;",
+                "\t$0",
+                "\tcreatedDate: Date;",
+                "\tisDeleted: boolean;",
+            "}"
+        ]
+    },
+    "Service Class": {
+        "prefix": [ "dna.service" ],
+        "body": [
+            "import { Injectable } from '@angular/core';",
+            "import { HttpClient } from '@angular/common/http';",
+            "import { BehaviorSubject } from 'rxjs';",
+            "import { SnackerService } from './snacker.service';",
+            "",
+            "@Injectable()",
+            "export class ${1:Object}Service {",
+                "\t$0",
+                "",
+                "\tconstructor(",
+                    "\t\tprivate http: HttpClient,",
+                    "\t\tprivate snacker: SnackerService",
+                "\t) { }",
+            "}"
+        ]
+    },
+    "Service HTTP Function": {
+        "prefix": [ "dna.http-func" ],
+        "body": [
+            "${1:func} = () => this.http.get<${2:T}>(`/api/${3:route}`)",
+                "\t.subscribe(",
+                    "\t\tdata => this.${4:stream}.next(data),",
+                    "\t\terr => this.snacker.sendErrorMessage(err.error)",
+                "\t);"
+        ]
+    },
+    "Service HTTP Promise": {
+        "prefix": [ "dna.http-promise" ],
+        "body": [
+            "${1:func} = (${2:arg}: ${3:T}): Promise<boolean> =>",
+                "\tnew Promise((resolve) => {",
+                    "\t\tthis.http.${4:post}(`/api/${5:route}`, ${2:arg})",
+                        "\t\t\t.subscribe(",
+                            "\t\t\t\t() => {",
+                                "\t\t\t\t\tthis.snacker.sendSuccessMessage(${6:success});",
+                                "\t\t\t\t\tresolve(true);",
+                            "\t\t\t\t},",
+                            "\t\t\t\terr => {",
+                                "\t\t\t\t\tthis.snacker.sendErrorMessage(err.error);",
+                                "\t\t\t\t\tresolve(false);",
+                            "\t\t\t\t}",
+                        "\t\t\t);",
+                "\t});"
+        ]
+    },
+    "SignalR Service Class": {
+        "prefix": [ "dna.sgl-service" ],
+        "body": [
+            "import { Injectable } from '@angular/core';",
+            "import { HubConnectionBuilder } from '@aspnet/signalr';",
+            "import { BehaviorSubject } from 'rxjs';",
+            "import { SnackerService } from '../snacker.service';",
+            "",
+            "@Injectable()",
+            "export class ${1:Object}SocketService {",
+                "\tprivate connection = new HubConnectionBuilder()",
+                    "\t\t.withUrl('${2:url}')",
+                    "\t\t.build();",
+                "",
+                "\tprivate connected = new BehaviorSubject<boolean>(false);",
+                "\tprivate error = new BehaviorSubject<any>(null);",
+                "\tprivate trigger = new BehaviorSubject<boolean>(false);",
+                "",
+                "\tconnected$ = this.connected.asObservable();",
+                "\terror$ = this.error.asObservable();",
+                "\ttrigger$ = this.trigger.asObservable();",
+                "",
+                "\tconstructor(",
+                    "\t\tprivate snacker: SnackerService",
+                "\t) {",
+                    "\t\tthis.connection",
+                        "\t\t\t.start()",
+                        "\t\t\t.then(() => this.connected.next(true))",
+                        "\t\t\t.catch((err) => {",
+                            "\t\t\t\tthis.connected.next(false);",
+                            "\t\t\t\tthis.error.next(err);",
+                            "\t\t\t\tthis.snacker.sendErrorMessage(err.error);",
+                        "\t\t\t});",
+                "\t}",
+                "",
+                "\t$0",
+            "}"
+        ]
+    },
+    "SignalR Trigger Function": {
+        "prefix": [ "dna.sgl-trigger" ],
+        "body": [
+            "trigger${1:Func} = async (${2:arg}: ${3:T}) =>",
+                "\tthis.connected.value &&",
+                    "\t\tawait this.connection",
+                        "\t\t\t.invoke('trigger${1:Func}', ${2:arg});"
+        ]
+    },
+    "Component Class": {
+        "prefix": [ "dna.component" ],
+        "body": [
+            "import {",
+                "\tComponent,",
+                "\tInput,",
+                "\tOutput,",
+                "\tEventEmitter",
+            "} from '@angular/core';",
+            "",
+            "import { ${1:Model} } from '../../models';",
+            "",
+            "@Component({",
+                "\tselector: '${2:selector}',",
+                "\ttemplateUrl: '${2:selector}.component.html'",
+            "})",
+            "export class ${3:Object}Component {",
+                "\t$0",
+            "}"
+        ]
+    },
+    "Pipe Class": {
+        "prefix": [ "dna.pipe" ],
+        "body": [
+            "import {",
+                "\tPipe,",
+                "\tPipeTransform",
+            "} from '@angular/core';",
+            "",
+            "@Pipe({",
+                "\tname: '${1:name}'",
+            "})",
+            "export class ${2:Object}Pipe implements PipeTransform {",
+                "\ttransform(value: ${3:T}, ${4:args}) {",
+                    "\t\t$0",
+                "\t}",
+            "}"
+        ]
+    },
+    "Route Class": {
+        "prefix": [ "dna.route" ],
+        "body": [
+            "import {",
+                "\tComponent,",
+                "\tOnInit",
+            "} from '@angular/core';",
+            "",
+            "@Component({",
+                "\tselector: '${1:object}-route",
+                "\ttemplateUrl: '${1:object}.component.html",
+            "})",
+            "export class ${2:Object}Component implements OnInit {",
+                "\tconstructor(",
+                    "",
+                "\t) { }",
+                "",
+                "\tngOnInit() {",
+                    "",
+                "\t}",
+                "",
+                "\t$0",
+            "}"
+        ]
+    },
+    "Dialog Class": {
+        "prefix": [ "dna.dialog" ],
+        "body": [
+            "import {",
+                "\tMatDialogRef,",
+                "\tMAT_DIALOG_DATA",
+            "} from '@angular/material';",
+            "",
+            "import {",
+                "\tComponent,",
+                "\tInject",
+            "} from '@angular/core';",
+            "",
+            "@Component({",
+                "\tselector: '${1:object}-dialog',",
+                "\ttemplateUrl: '${1:object}.dialog.html'",
+            "})",
+            "export class ${2:Object}Dialog {",
+                "\t$0",
+            "}"
+        ]
+    }
+}

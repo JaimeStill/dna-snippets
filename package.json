@@ -1,0 +1,28 @@
+{
+    "name": "dna-snippets",
+    "displayName": ".NET Core Angular Stack Snippets",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.37.0"
+    },
+    "categories": [
+        "Snippets"
+    ],
+    "contributes": {
+        "snippets": [
+            {
+                "language": "csharp",
+                "path": "./snippets/csharp.json"
+            },
+            {
+                "language": "typescript",
+                "path": "./snippets/typescript.json"
+            },
+            {
+                "language": "html",
+                "path": "./snippets/html.json"
+            }
+        ]
+    }
+}

@@ -1,0 +1,217 @@
+{
+    "Entity Class": {
+        "prefix": [ "dna.ent-class" ],
+        "body": [
+            "using System;",
+            "using System.Collections.Generic;",
+            "",
+            "namespace ${1:Project}.Data.Entities",
+            "{",
+                "\tpublic class ${2:Entity}",
+                "\t{",
+                    "\t\tpublic int Id { get; set; }",
+                    "\t\t$0",
+                    "\t\tpublic DateTime CreatedDate { get; set; }",
+                    "\t\tpublic bool IsDeleted { get; set; }",
+                "\t}",
+            "}"
+        ]
+    },
+    "Extension Class": {
+        "prefix": [ "dna.ext-class" ],
+        "body": [
+            "using System;",
+            "using System.Collections.Generic;",
+            "using System.Linq;",
+            "using System.Threading.Tasks;",
+            "using Microsoft.EntityFrameworkCore;",
+            "using ${1:Project}.Data.Entities;",
+            "",
+            "namespace ${1:Project}.Data.Extensions",
+            "{",
+                "\tpublic static class ${2:Entity}Extensions",
+                "\t{",
+                    "\t\t$0",
+                "\t}",
+            "}"
+        ]
+    },
+    "Extension Method": {
+        "prefix": [ "dna.ext-method" ],
+        "body": [
+            "public static async Task ${1:Method}(this ${2:Type} ${3:arg})",
+            "{",
+                "\t$0",
+            "}"
+        ]
+    },
+    "Extension Get Method": {
+        "prefix": [ "dna.ext-get" ],
+        "body": [
+            "public static async Task<${1:T}> ${2:Get}(this AppDbContext db)",
+            "{",
+                "\t$0",
+            "}"
+        ]
+    },
+    "Extension Entity Method": {
+        "prefix": [ "dna.ext-entity" ],
+        "body": [
+            "public static async Task ${1:Method}(this AppDbContext db, ${2:T} ${3:arg})",
+            "{",
+                "\t$0",
+            "}"
+        ]
+    },
+    "Extension Validate Method": {
+        "prefix": [ "dna.ext-validate" ],
+        "body": [
+            "public static bool Validate(this ${1:T} ${2:arg})",
+            "{",
+                "\t$0",
+                "",
+                "\treturn true;",
+            "}"
+        ]
+    },
+    "Extension Validate Async Method": {
+        "prefix": [ "dna.ext-validate-async" ],
+        "body": [
+            "public static async Task<bool> Validate(this ${1:T} ${2:arg}, AppDbContext db)",
+            "{",
+                "\t$0",
+                "",
+                "\treturn true;",
+            "}"
+        ]
+    },
+    "Middleware Class": {
+        "prefix": [ "dna.mw-class" ],
+        "body": [
+            "using System.Threading.Tasks;",
+            "using Microsoft.AspNetCore.Http;",
+            "",
+            "namespace ${1:Namespace}",
+            "{",
+                "\tpublic class ${2:App}Middleware",
+                "\t{",
+                    "\t\tprivate readonly RequestDelegate next;",
+                    "",
+                    "\t\tpublic ${2:App}Middleware(RequestDelegate next)",
+                    "\t\t{",
+                        "\t\t\tthis.next = next;",
+                    "\t\t}",
+                    "",
+                    "\t\tpublic async Task Invoke(HttpContext context)",
+                    "\t\t{",
+                        "\t\t\t$0",
+                        "",
+                        "\t\t\tawait next(context);",
+                    "\t\t}",
+                "\t}",
+            "}"
+        ]
+    },
+    "Middleware Extension": {
+        "prefix": [ "dna.mw-extension" ],
+        "body": [
+            "using ${1:Namespace};",
+            "",
+            "namespace Microsoft.AspNetCore.Builder",
+            "{",
+                "\tpublic static class ${2:Middleware}Extensions",
+                "\t{",
+                    "\t\tpublic static IApplicationBuilder Use${3:App}Middleware(this IApplicationBuilder builder) =>",
+                        "\t\t\tbuilder.UseMiddleware<${3:App}Middleware>();",
+                "\t}",
+            "}"
+        ]
+    },
+    "Controller Class": {
+        "prefix": [ "dna.ctl-class" ],
+        "body": [
+            "using System.Collections.Generic;",
+            "using System.Threading.Tasks;",
+            "using Microsoft.AspNetCore.Mvc;",
+            "using ${1:Project}.Data;",
+            "using ${1:Project}.Data.Entities;",
+            "using ${1:Project}.Data.Extensions;",
+            "",
+            "namespace ${1:Project}.Web.Controllers",
+            "{",
+                "\t[Route(\"api/[controller]\")]",
+                "\tpublic class ${2:Entity}Controller : Controller",
+                "\t{",
+                    "\t\tprivate AppDbContext db;",
+                    "",
+                    "\t\tpublic ${2:Entity}Controller(AppDbContext db)",
+                    "\t\t{",
+                        "\t\t\tthis.db = db;",
+                    "\t\t}",
+                    "",
+                    "\t\t$0",
+                "\t}",
+            "}"
+        ]
+    },
+    "Controller Get Method": {
+        "prefix": [ "dna.ctl-get" ],
+        "body": [
+            "[HttpGet(\"[action]\")]",
+            "public async Task<${1:T}> ${2:Get}() => await db.${2:Get}();"
+        ]
+    },
+    "Controller Post Method": {
+        "prefix": [ "dna.ctl-post" ],
+        "body": [
+            "[HttpPost(\"[action]\")]",
+            "public async Task ${1:Post}([FromBody]${2:T} ${3:arg}) => await db.${1:Post}(${3:arg});"
+        ]
+    },
+    "Controller Upload Method": {
+        "prefix": [ "dna.ctl-upload" ],
+        "body": [
+            "[HttpPost(\"[action]\")]",
+            "[DisableRequestSizeLimit]",
+            "public async Task<${1:T}> ${2:Upload}() =>",
+                "\tawait db.${2:Upload}(",
+                    "\t\tRequest.Form.Files,",
+                    "\t\tconfig.DirectoryBasePath,",
+                    "\t\tconfig.UrlBasePath",
+                "\t);"
+        ]
+    },
+    "SignalR Hub Class": {
+        "prefix": [ "dna.sgl-hub" ],
+        "body": [
+            "using System;",
+            "using System.Linq;",
+            "using System.Threading.Tasks;",
+            "using Microsoft.AspNetCore.SignalR;",
+            "",
+            "namespace ${1:Project}.Web.Hubs",
+            "{",
+                "\tpublic class ${2:Data}Hub : Hub",
+                "\t{",
+                    "\t\tpublic override async Task OnDisconnectedAsync(Exception ex)",
+                    "\t\t{",
+                        "\t\t\t$LINE_COMMENT Manage client disconnect",
+                        "",
+                        "\t\t\tawait base.OnDisconnectedAsync(ex);",
+                    "\t\t}",
+                    "",
+                    "\t\t$0",
+                "\t}",
+            "}"
+        ]
+    },
+    "SignalR Hub Trigger": {
+        "prefix": [ "dna.sgl-trigger" ],
+        "body": [
+            "public async Task trigger${1:Action}(${2:T} ${3:arg})",
+            "{",
+                "\tawait Clients.${4:SendAll}(${3:arg}).SendAsync(\"${5:method}\");",
+            "}"
+        ]
+    }
+}
