@@ -191,5 +191,110 @@
                 "\t$0",
             "}"
         ]
+    },
+    "Observable Input": {
+        "prefix": [ "dna.obs-input" ],
+        "body": [
+            "@ViewChild('${1:inputVar}', { static: ${2:false} })",
+            "set ${1:inputVar}(input: ElementRef) {",
+                "\tif (input && !this.initialized) {",
+                    "\t\tthis.core.generateInputObservable(input)",
+                        "\t\t\t.subscribe(async val => {",
+                            "\t\t\t\t$0",
+                        "\t\t\t});",
+                    "\t\tthis.initialized = true;",
+                "\t}",
+            "}"
+        ]
+    },
+    "Component Index": {
+        "prefix": [ "dna.idx-component" ],
+        "body": [
+            "import { ${1:Component} } from '${2:dir}';",
+            "$0",
+            "",
+            "export const ${3:Object}Components = [",
+                "\t${1:Component}",
+            "];"
+        ]
+    },
+    "Dialog Index": {
+        "prefix": [ "dna.idx-dialog" ],
+        "body": [
+            "import { ${1:Dialog} } from '${2:dir}';",
+            "$0",
+            "",
+            "export const ${3:Object}Dialogs = [",
+                "\t${1:Dialog}",
+            "];",
+            "",
+            "export * from '${2:dir}';"
+        ]
+    },
+    "Model Index": {
+        "prefix": [ "dna.idx-model" ],
+        "body": [
+            "export * from '$0';"
+        ]
+    },
+    "Pipe Index": {
+        "prefix": [ "dna.idx-pipe" ],
+        "body": [
+            "import { ${1:Pipe} } from '${2:dir}';",
+            "$0",
+            "",
+            "export const ${3:Object}Pipes = [",
+                "\t${1:Pipe}",
+            "];"
+        ]
+    },
+    "Route Index": {
+        "prefix": [ "dna.idx-route" ],
+        "body": [
+            "import { Route } from '@angular/router';",
+            "import { ${1:RouteComponent} } from '${2:dir}';",
+            "$0",
+            "",
+            "export const RouteComponents = [",
+                "\t${1:RouteComponent}",
+            "];",
+            "",
+            "export const Routes: Route[] = [",
+                "\t{ path: '${3:path}', component: ${1:RouteComponent} },",
+                "\t{ path: '', redirectTo: '${3:path}', pathMatch: 'full' },",
+                "\t{ path: '**', redirectTo: '${3:path}', pathMatch: 'full' }",
+            "];"
+        ]
+    },
+    "Child Route Index": {
+        "prefix": [ "dna.idx-child-route" ],
+        "body": [
+            "import { Route } from '@angular/router';",
+            "import { ${1:RouteComponent} } from '${2:dir}';",
+            "$0",
+            "",
+            "export const ${3:Object}Components = [",
+                "\t${1:RouteComponent}",
+            "];",
+            "",
+            "export const ${3:Object}Routes: Route[] = [",
+                "\t{ path: '${4:path}', component: ${1:RouteComponent} },",
+                "\t{ path: '', redirectTo: '${4:path}', pathMatch: 'prefix' },",
+                "\t{ path: '**', redirectTo: '${4:path}', pathMatch: 'prefix' }",
+            "];"
+        ]
+    },
+    "Service Index": {
+        "prefix": [ "dna.idx-service" ],
+        "body": [
+            "import { ${1:Service} } from '${2:dir}';",
+            "$0",
+            "",
+            "export const Services = [",
+                "\t${1:Service}",
+            "];",
+            "",
+            "export * from '${2:dir}';"
+        ]
     }
 }

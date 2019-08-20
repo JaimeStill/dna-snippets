@@ -4,6 +4,34 @@ All notable changes to the "dna-snippets" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## 0.0.1
 
-- Initial release
+* Initial release
+
+## 0.0.2  
+
+**Added** new snippets as follows:  
+
+* `dna.obs-input` - TypeScript
+* `dna.idx-component` - TypeScript
+* `dna.idx-dialog` - TypeScript
+* `dna.idx-model` - TypeScript
+* `dna.idx-pipe` - TypeScript
+* `dna.idx-route` - TypeScript
+* `dna.idx-child-route` - TypeScript
+* `dna.idx-service` - TypeScript
+* `dna.card-shell` - HTML
+* `dna.flex-container` - HTML
+* `dna.async-container` - HTML
+* `dna.loading-template` - HTML
+* `dna.searchbar` - HTML
+* `dna.mat-select` - HTML
+* `dna.mat-input` - HTML
+* `dna.mat-input-trv` - HTML
+* `dna.mat-textarea` - HTML
+* `dna.mat-slider` - HTML
+* `dna.mat-slide-toggle` - HTML
+* `dna.mat-menu` - HTML
+* `dna.mat-tab-nav` - HTML
+
+> See updated [README](./readme.md) for details

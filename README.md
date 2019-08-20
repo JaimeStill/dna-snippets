@@ -11,6 +11,7 @@
 * [Snippet Anatomy](#snippet-anatomy)
     * [.NET Snippet Anatomy](#net-snippet-anatomy)
     * [Angular Snippet Anatomy](#angular-snippet-anatomy)
+        * [Angular Template Anatomy](#angular-template-anatomy)
 
 ## Overview  
 [Back to Top](#contents)  
@@ -57,7 +58,28 @@ Component Class | `dna.component` | TypeScript
 Pipe Class | `dna.pipe` | TypeScript
 Route Class | `dna.route` | TypeScript
 Dialog Class | `dna.dialog` | TypeScript
+Observable Input | `dna.obs-input` | TypeScript
+Component Index | `dna.idx-component` | TypeScript
+Dialog Index | `dna.idx-dialog` | TypeScript
+Model Index | `dna.idx-model` | TypeScript
+Pipe Index | `dna.idx-pipe` | TypeScript
+Route Index | `dna.idx-route` | TypeScript
+Child Route Index | `dna.idx-child-route` | TypeScript
+Service Index | `dna.idx-service` | TypeScript
 Dialog Template | `dna.dialog` | HTML
+Card Shell | `dna.card-shell` | HTML
+Flex Container | `dna.flex-container` | HTML
+Async Container | `dna.async-container` | HTML
+Loading Template | `dna.loading-template` | HTML
+Searchbar | `dna.searchbar` | HTML
+Material Select | `dna.mat-select` | HTML
+Material Input | `dna.mat-input` | HTML
+Material Input Template Reference Variable | `dna.mat-input-trv` | HTML
+Material Textarea | `dna.mat-textarea` | HTML
+Material Slider | `dna.mat-slider` | HTML
+Material Slide Toggle | `dna.mat-slide-toggle` | HTML
+Material Menu | `dna.mat-menu` | HTML
+Material Tab Nav | `dna.mat-tab-nav` | HTML
 
 ## Snippet Anatomy
 
@@ -644,6 +666,170 @@ export class ${2:Object}Dialog {
 }
 ```  
 
+**Observable Input**  
+
+`dna.obs-input`  
+
+Parameters:  
+* `inputVar` - Template reference variable name
+* `false` - Set the value of `@ViewChild`'s `static` option  
+
+> Assumes a local `initialized` variable, as well as injecting a `core: CoreService` object that contains a `generateInputObservable(input: ElementRef)` function. See [StackBlitz - Docs ViewChild](https://stackblitz.com/edit/docs-viewchild) for an example.
+
+```ts
+@ViewChild('${1:inputVar}', { static: ${2: false} })
+set ${1:inputVar}(input: ElementRef) {
+    if (input && !this.initialized) {
+        this.core.generateInputObservable(input)
+            .subscribe(async val => {
+                // ENTRY POINT
+            });
+        this.initialized = true;
+    }
+}
+```
+
+**Component Index**  
+
+`dna.idx-component`  
+
+Parameters:  
+* `Component` - The initial component to load
+* `dir` - The relative path to the initial component file
+* `Object` - The name of the exported components array  
+
+```ts
+import { ${1:Component} } from '${2:dir}';
+// ENTRY POINT
+
+export const ${3:Object}Components = [
+    ${1:Component}
+];
+```  
+
+**Dialog Index**  
+
+`dna.idx-dialog`  
+
+Parameters:  
+* `Dialog` - The initial dialog to load
+* `dir` - The relative path to the initial dialog file
+* `Object` - The name of the exported dialogs array  
+
+```ts
+import { ${1:Dialog} } from '${2:dir}';
+// ENTRY POINT
+
+export const ${3:Object}Dialogs = [
+    ${1:Dialog}
+];
+
+export * from '${2:dir}';
+```  
+
+**Model Index**  
+
+`dna.idx-model`  
+
+> No parameters  
+
+```ts
+export * from '$0'; // ENTRY POINT @ $0
+```  
+
+**Pipe Index**  
+
+`dna.idx-pipe`  
+
+Parameters:
+* `Pipe` - The initial pipe to load
+* `dir` - The relative path to the initial pipe file
+* `Object` - The name of the exported pipes array  
+
+```ts
+import { ${1:Pipe} } from '${2:dir}';
+// ENTRY POINT
+
+export const ${3:Object}Pipes = [
+    ${1:Pipe}
+];
+```  
+
+**Route Index**  
+
+`dna.idx-route`  
+
+Parameters:
+* `RouteComponent` - The initial route component to load
+* `dir` - The relative path to the initial route component file
+* `path` - The route the initial route component should resolve to
+
+```ts
+import { Route } from '@angular/router';
+import { ${1:RouteComponent} } from '${2:dir}';
+// ENTRY POINT
+
+export const RouteComponents = [
+    ${1:RouteComponent}
+];
+
+export const Routes: Route[] = [
+    { path: '${3:path}', component: ${1:RouteComponent} },
+    { path: '', redirectTo: '${3:path}', pathMatch: 'full' },
+    { path: '**', redirectTo: '${3:path}', pathMatch: 'full' }
+];
+```  
+
+**Child Route Index**  
+
+`dna.idx-child-route`  
+
+Parameters:
+* `RouteComponent` - The initial route component to load
+* `dir` - The relative path to the initial route component file
+* `Object` - The name of the exported routes / route components arrays
+* `path` - The route the initial route component should resolve to  
+
+```ts
+import { Route } from '@angular/router';
+import { ${1:RouteComponent} } from '${2:dir}';
+// ENTRY POINT
+
+export const ${3:Object}Components = [
+    ${1:RouteComponent}
+];
+
+export const ${3:Object}Routes: Route[] = [
+    { path: '${4:path}', component: ${1:RouteComponent} },
+    { path: '', redirectTo: '${4:path}', pathMatch: 'prefix' },
+    { path: '**', redirectTo: '${4:path}', pathMatch: 'prefix' }
+];
+```  
+
+**Service Index**  
+
+`dna.idx-service`  
+
+Parameters:
+* `Service` - The initial service to load
+* `dir` - The relative path to the initial service file  
+
+> Any service loaded into the Services array is added to a `ServicesModule.providers` array, thus making it initially globally scoped.  
+
+```ts
+import { ${1:Service} } from '${2:dir}';
+// ENTRY POINT
+
+export const Services = [
+    ${1:Service}
+];
+
+export * from '${2:dir}';
+```
+
+#### Angular Template Anatomy  
+[Back to Top](#contents)  
+
 **Dialog Template**  
 
 `dna.dialog`  
@@ -662,4 +848,248 @@ Parameters:
                 mat-dialog-close>Cancel</button>
     </mat-dialog-actions>
 </div>
+```
+
+**Card Shell**  
+
+`dna.card-shell`  
+
+Parameters:
+* `elevated` - Additional classes
+* `layout` - Flex layout
+* `align` - Flex layout alignment  
+
+```html
+<section class="background card ${1:elevated}"
+         fxLayout="${2:layout}"
+         fxLayoutAlign="${3:align}">
+    <!-- ENTRY POINT -->
+</section>
+```
+
+**Flex Container**  
+
+`dna.flex-container`  
+
+Parameters:
+* `layout` - Flex layout
+* `align` - Flex layout alignment  
+
+```html
+<section fxLayout="${1:layout}"
+         fxLayoutAlign="${2:align}"
+         class="container">
+    <!-- ENTRY POINT -->
+</section>
+```
+
+**Async Container**  
+
+`dna.async-container`  
+
+Parameters:
+* `stream` - Stream to subscribe to with the `async` pipe
+* `data` - Resulting value of data resolved by `stream`
+
+```html
+<ng-container *ngIf="${1:stream} | async as ${2:data} else loading">
+    <!-- ENTRY POINT -->
+</ng-container>
+```
+
+**Loading Template**
+
+`dna.loading-template`  
+
+Parameters:
+* `indeterminate` - MatProgressBar mode
+* `accent` - Material theme color
+
+```html
+<ng-template #loading>
+    <mat-progress-bar mode="${1:indeterminate}"
+                      color="${2:accent}"></mat-progress-bar>
+</ng-template>
+```
+
+**Searchbar**  
+
+`dna.searchbar`  
+
+Parameters:
+* `Search` - Searchbar label
+* `1` - Minimum number of characters before `search` function is executed
+* `searchFunction` - Function to execute on `search`
+* `clearFunction` - Function to execute when searchbar is cleared
+
+> Assumes a SearchbarComponent exists with the specified input / output properties. See [StackBlitz - Searchbar Example]() for this [component definition](https://stackblitz.com/edit/searchbar-example?file=src%2Fapp%2Fcomponents%2Fsearchbar%2Fsearchbar.component.ts) and [implementation](https://stackblitz.com/edit/searchbar-example?file=src%2Fapp%2Froutes%2Fhome%2Fhome.component.html).
+
+```html
+<searchbar label="${1:Search}"
+           [minimum]="${2:1}"
+           (search)="${3:searchFunction}"
+           (clear)="${4:clearFunction}"></searchbar>
+```
+
+**Material Select**
+
+`dna.mat-select`  
+
+Parameters:
+* `Label` - Select label
+* `model` - Data binding target for the select element
+* `changeFunction()` - Function to execute when the selection is changed
+* `o` - Variable representing a single option from a collection of objects
+* `data` - A collection of objects to iterate when populating select options
+* `val` - Value that a select option represents from the `o` variable
+* `display` - Property / Properties to display from the `o` variable in the select list  
+
+```html
+<mat-form-field>
+    <mat-label>${1:Label}</mat-label>
+    <mat-select [(ngModel)]="${2:model}"
+                (selectionChange)="${3:changeFunction()}">
+        <mat-option *ngFor="let ${4:o} of ${5:data}"
+                    [value]="${6:val}">
+            {{${7:display}}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+```
+
+**Material Input**  
+
+`dna.mat-input`  
+
+Parameters:
+* `Label` - Input label
+* `model` - Data binding target for the input element  
+
+```html
+<mat-form-field>
+    <mat-label>${1:Label}</mat-label>
+    <input matInput 
+           [(ngModel)]="${2:model}" />
+</mat-form-field>
+```  
+
+**Material Input Template Reference Variable**  
+
+`dna.mat-input-trv`
+
+Parameters:
+* `Label` - Input label
+* `model` - Data binding target for the input element
+* `varName` - Template reference variable name  
+
+```html
+<mat-form-field>
+    <mat-label>${1:Label}</mat-label>
+    <input matInput
+           [(ngModel)]="${2:model}"
+           #${3:varName} />
+</mat-form-field>
+```
+
+**Material Textarea**  
+
+`dna.mat-textarea`  
+
+Parameters:
+* `Label` - Textarea label
+* `model` - Data binding target for the textarea element
+* `4` - Autosize minimum rows
+* `8` - Autosize maximum rows
+
+```html
+<mat-form-field>
+    <mat-label>${1:Label}</mat-label>
+    <textarea matInput
+              mat-autosize
+              [(ngModel)]="${2:model}"
+              [matAutosizeMinRows]="${3:4}"
+              [matAutosizeMaxRows]="${4:8}"></textarea>
+</mat-form-field>
+```
+
+**Material Slider**  
+
+`dna.mat-slider`  
+
+Parameters:
+* `model` - Data binding target for the mat-slider element
+* `min` - Minimum value
+* `max` - Maximum value
+* `true` - Show thumblabel
+* `step` - Step values at which thumb will snap
+* `interval` - How often ticks are shown on the slider
+* `inputFunction` - Function to call as slider values change  
+
+```html
+<mat-slider [value]="${1:model}"
+            [min]="${2:min}"
+            [max]="${3:max}"
+            [thumbLabel]="${4:true}"
+            [step]="${5:step}"
+            [tickInterval]="${6:interval}"
+            (input)="${7:inputFunction}"></mat-slider>
+```
+
+**Material Slide Toggle**  
+
+`dna.mat-slide-toggle`  
+
+Parameters:
+* `model` - Data binding target for the mat-slide-toggle element
+* `Label` - Slide toggle label
+
+```html
+<mat-slide-toggle [(ngModel)]="${1:model}">${2:Label}</mat-slide-toggle>
+```
+
+**Material Menu**
+
+`dna.mat-menu`  
+
+Parameters:
+* `menu` - Menu reference variable name
+* `menu_icon` - Material icon to use for the menu button
+* `clickFunction` - Function to execute for the initial menu item
+* `label` - Initial menu item label
+
+```html
+<button mat-icon-button
+        [matMenuTriggerFor]="${1:menu}">
+    <mat-icon>${2:menu_icon}</mat-icon>
+</button>
+<mat-menu #${1:menu}="matMenu">
+    <button mat-menu-item
+            (click)="${3:clickFunction}">
+        {{${4:label}}}
+    </button>
+    <!-- ENTRY POINT -->
+</mat-menu>
+```
+
+**Material Tab Nav**
+
+`dna.mat-tab-nav`
+
+Parameters:
+* `scrolled` - Additional class to apply to the nav element.
+* `link` - Initial tab link
+* `active` - Initial tab active class
+* `Label` - Initial tab label
+
+```html
+<nav mat-tab-nav-bar
+     class="${1:scrolled}">
+    <a mat-tab-link
+       routerLink="${2:link}"
+       routerLinkActive="${3:active}">
+        ${4:Label}
+    </a>
+    <!-- ENTRY POINT -->
+</nav>
+<router-outlet></router-outlet>
 ```

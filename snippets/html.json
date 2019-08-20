@@ -8,10 +8,121 @@
                     "\t\t$0",
                 "\t</mat-dialog-content>",
                 "\t<mat-dialog-actions>",
-                    "\t\t<button mat-button",
-                        "\t\t\tmat-dialog-close>Cancel</button>",
+                    "\t\t<button mat-button mat-dialog-close>Cancel</button>",
                 "\t</mat-dialog-actions>",
             "</div>"
+        ]
+    },
+    "Card Shell": {
+        "prefix": [ "dna.card-shell" ],
+        "body": [
+            "<section class=\"background card ${1:elevated}\" fxLayout=\"${2:layout}\" fxLayoutAlign=\"${3:align}\">",
+                "\t$0",
+            "</section>"
+        ]
+    },
+    "Flex Container": {
+        "prefix": [ "dna.flex-container" ],
+        "body": [
+            "<section fxLayout=\"${1:layout}\" fxLayoutAlign=\"${2:align}\" class=\"container\">",
+                "\t$0",
+            "</section>"
+        ]
+    },
+    "Async Container": {
+        "prefix": [ "dna.async-container" ],
+        "body": [
+            "<ng-container *ngIf=\"${1:stream} | async as ${2:data} else loading\">",
+                "\t$0",
+            "</ng-container>"
+        ]
+    },
+    "Loading Template": {
+        "prefix": [ "dna.loading-template" ],
+        "body": [
+            "<ng-template #loading>",
+                "\t<mat-progress-bar mode=\"${1:indeterminate}\" color=\"${2:accent}\"></mat-progress-bar>",
+            "</ng-template>"
+        ]
+    },
+    "Searchbar": {
+        "prefix": [ "dna.searchbar" ],
+        "body": [
+            "<searchbar label=\"${1:Search}\" [minimum]=\"${2:1}\" (search)=\"${3:searchFunction}\" (clear)=\"${4:clearFunction}\"></searchbar>"
+        ]
+    },
+    "Material Select": {
+        "prefix": [ "dna.mat-select" ],
+        "body": [
+            "<mat-form-field>",
+                "\t<mat-label>${1:Label}</mat-label>",
+                "\t<mat-select [(ngModel)]=\"${2:model}\" (selectionChange)=\"${3:changeFunction()}\">",
+                    "\t\t<mat-option *ngFor=\"let ${4:o} of ${5:data}\" [value]=\"${6:val}\">{{${7:display}}}</mat-option>",
+                "\t</mat-select>",
+            "</mat-form-field>"
+        ]
+    },
+    "Material Input": {
+        "prefix": [ "dna.mat-input" ],
+        "body": [
+            "<mat-form-field>",
+                "\t<mat-label>${1:Label}</mat-label>",
+                "\t<input matInput [(ngModel)]=\"${2:model}\" />",
+            "</mat-form-field>"
+        ]
+    },
+    "Material Input Template Reference Variable": {
+        "prefix": [ "dna.mat-input-trv" ],
+        "body": [
+            "<mat-form-field>",
+                "\t<mat-label>${1:Label}</mat-label>",
+                "\t<input matInput [(ngModel)]=\"${2:model}\" #${3:varName} />",
+            "</mat-form-field>"
+        ]
+    },
+    "Material Textarea": {
+        "prefix": [ "dna.mat-textarea" ],
+        "body": [
+            "<mat-form-field>",
+                "\t<mat-label>${1:Label}</mat-label>",
+                "\t<textarea matInput mat-autosize [(ngModel)]=\"${2:model}\" [matAutosizeMinRows]=\"${3:4}\" [matAutosizeMaxRows]=\"${4:8}\"></textarea>",
+            "</mat-form-field>"
+        ]
+    },
+    "Material Slider": {
+        "prefix": [ "dna.mat-slider" ],
+        "body": [
+            "<mat-slider [value]=\"${1:model}\" [min]=\"${2:min}\" [max]=\"${3:max}\" [thumbLabel]=\"${4:true}\" [step]=\"${5:step}\" [tickInterval]=\"${6:interval}\" (input)=\"${7:inputFunction}\"></mat-slider>"
+        ]
+    },
+    "Material Slide Toggle": {
+        "prefix": [ "dna.mat-slide-toggle" ],
+        "body": [
+            "<mat-slide-toggle [(ngModel)]=\"${1:model}\">${2:Label}</mat-slide-toggle>"
+        ]
+    },
+    "Material Menu": {
+        "prefix": [ "dna.mat-menu" ],
+        "body": [
+            "<button mat-icon-button [matMenuTriggerFor]=\"${1:menu}\">",
+                "\t<mat-icon>${2:menu_icon}</mat-icon>",
+            "</button>",
+            "<mat-menu #${1:menu}=\"matMenu\">",
+                "\t<button mat-menu-item (click)=\"${3:clickFunction}\">{{${4:label}}}</button>",
+                "\t$0",
+            "</mat-menu>"
+        ]
+    },
+    "Material Tab Nav": {
+        "prefix": [ "dna.mat-tab-nav" ],
+        "body": [
+            "<nav mat-tab-nav-bar class=\"${1:scrolled}\">",
+                "\t<a mat-tab-link routerLink=\"${2:link}\" routerLinkActive=\"${3:active}\">",
+                    "\t\t${4:Label}",
+                "\t</a>",
+                "\t$0",
+            "</nav>",
+            "<router-outlet></router-outlet>"
         ]
     }
 }
