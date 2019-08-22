@@ -2,7 +2,7 @@
     "name": "dna-snippets",
     "displayName": ".NET Core Angular Stack Snippets",
     "description": "Personal snippets for my ASP.NET Core and Angular workflow",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "jaimestill",
     "author": {
         "name": "jaimestill"
