@@ -124,5 +124,33 @@
             "</nav>",
             "<router-outlet></router-outlet>"
         ]
+    },
+    "Drag and Drop Selector": {
+        "prefix": [ "dna.dnd-selector" ],
+        "body": [
+            "<button mat-button [disabled]=\"pending\" [style.margin.px]=\"8\" (click)=\"save.emit(${6:assigned})\">",
+                "\tSave",
+            "</button>",
+            "<section fxLayout=\"row | wrap\" fxLayoutAlign=\"start start\">",
+                "\t<section fxLayout=\"column\" fxLayoutAlign=\"start stretch\" fxFlex [style.margin-right.px]=\"4\">",
+                    "\t\t<p class=\"mat-title\">${1:Available}</p>",
+                    "\t\t<section cdkDropList #list=\"cdkDropList\" [cdkDropListData]=\"${2:available}\" [cdkDropListConnectedTo]=\"[selected]\" class=\"container drop-container\" (cdkDropListDropped)=\"drop(\\$event)\">",
+                        "\t\t\t<section *ngFor=\"let ${3:x} of ${2:available}\" class=\"background card container elevated clickable\" cdkDrag>",
+                            "\t\t\t\t<div class=\"drag-placeholder\" *cdkDragPlaceholder></div>",
+                            "\t\t\t\t<p>{{${4:x.display}}}</p>",
+                        "\t\t\t</section>",
+                    "\t\t</section>",
+                "\t</section>",
+                "\t<section fxLayout=\"column\" fxLayoutAlign=\"start stretch\" fxFlex [style.margin-left.px]=\"4\">",
+                    "\t\t<p class=\"mat-title\">${5:Assigned}</p>",
+                    "\t\t<section cdkDropList #selected=\"cdkDropList\" [cdkDropListData]=\"${6:assigned}\" [cdkDropListConnectedTo]=\"[list]\" class=\"container drop-container\" (cdkDropListDropped)=\"drop(\\$event)\">",
+                        "\t\t\t<section *ngFor=\"let ${7:y} of ${6:assigned}\" class=\"background card container elevated clickable\" cdkDrag>",
+                            "\t\t\t\t<div class=\"drag-placeholder\" *cdkDragPlaceholder></div>",
+                            "\t\t\t\t<p>{{${8:y.display}}}</p>",
+                        "\t\t\t</section>",
+                    "\t\t</section>",
+                "\t</section>",
+            "</section>"
+        ]
     }
 }

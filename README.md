@@ -12,6 +12,7 @@
     * [.NET Snippet Anatomy](#net-snippet-anatomy)
     * [Angular Snippet Anatomy](#angular-snippet-anatomy)
         * [Angular Template Anatomy](#angular-template-anatomy)
+        * [Angular Style Anatomy](#angular-style-anatomy)
 
 ## Overview  
 [Back to Top](#contents)  
@@ -66,6 +67,7 @@ Pipe Index | `dna.idx-pipe` | TypeScript
 Route Index | `dna.idx-route` | TypeScript
 Child Route Index | `dna.idx-child-route` | TypeScript
 Service Index | `dna.idx-service` | TypeScript
+Drag and Drop Selector | `dna.dnd-selector` | TypeScript
 Dialog Template | `dna.dialog` | HTML
 Card Shell | `dna.card-shell` | HTML
 Flex Container | `dna.flex-container` | HTML
@@ -80,6 +82,8 @@ Material Slider | `dna.mat-slider` | HTML
 Material Slide Toggle | `dna.mat-slide-toggle` | HTML
 Material Menu | `dna.mat-menu` | HTML
 Material Tab Nav | `dna.mat-tab-nav` | HTML
+Drag and Drop Selector | `dna.dnd-selector` | HTML
+Drag and Drop Selector | `dna.dnd-selector` | CSS
 
 ## Snippet Anatomy
 
@@ -827,6 +831,60 @@ export const Services = [
 export * from '${2:dir}';
 ```
 
+**Drag and Drop Selector**  
+
+`dna.dnd-selector`  
+
+Parameters:
+* `Object` - Interface of the object represented by drag and drop arrays and Selector component name, PascalCased
+* `object` - Name for the selector component, kebab-cased
+* `available` - Array of objects available to add
+* `assigned` - Array of objects currently assigned and can be removed by dragging to `available`  
+
+```ts
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter
+} from '@angular/core';
+
+import {
+    CdkDragDrop,
+    moveItemInArray,
+    transferArrayItem
+} from '@angular/cdk/drag-drop';
+
+import { ${1:Object} } from '../../models';
+
+@Component({
+    selector: '${2:object}-selector',
+    templateUrl: '${2:object}-selector.component.html',
+    styleUrls: ['${2:object}-selector.component.css']
+})
+export class ${1:Object}SelectorComponent {
+    @Input() ${3:available}: ${1:Object}[];
+    @Input() ${4:assigned}: ${1:Object}[];
+    @Input() pending = false;
+    @Output() save = new EventEmitter<${1:Object}[]>();
+
+    drop = (event: CdkDragDrop<${1:Object}[]>) => {
+        event.previousContainer !== event.container ?
+            transferArrayItem(
+                event.previousContainer.data,
+                event.container.data,
+                event.previousIndex,
+                event.currentIndex
+            ) :
+            moveItemInArray(
+                event.container.data,
+                event.previousIndex,
+                event.currentIndex
+            );
+    }
+}
+```
+
 #### Angular Template Anatomy  
 [Back to Top](#contents)  
 
@@ -1092,4 +1150,104 @@ Parameters:
     <!-- ENTRY POINT -->
 </nav>
 <router-outlet></router-outlet>
+```
+
+**Drag and Drop Selector**  
+
+`dna.dnd-selector`  
+
+Parameters:
+* `Available` - Label for objects available for adding
+* `available` - Collection of objects available for adding
+* `x` - Variable to represent a singular object from `available` in an iteration
+* `x.display` - Property to display for `x`
+* `Assigned` - Label for objects already added / available for removal
+* `assigned` - Collection of objects already added / available for removal
+* `y` - Variable to represent a singular object from `assigned` in an iteration
+* `y.display` - Property to display for `y`  
+
+```html
+<button mat-button
+        [disabled]="pending"
+        [style.margin.px]="8"
+        (click)="save.emit(${6:assigned})">
+    Save
+</button>
+<section fxLayout="row"
+         fxLayoutAlign="start start">
+    <section fxLayout="column"
+             fxLayoutAlign="start stretch"
+             fxFlex
+             [style.margin-right.px]="4">
+        <p class="mat-title">${1:Available}</p>
+        <section cdkDropList
+                 #list="cdkDropList"
+                 [cdkDropListData]="${2:available}"
+                 [cdkDropListConnectedTo]="[selected]"
+                 class="container drop-container"
+                 (cdkDropListDropped)="drop($event)">
+            <section *ngFor="let ${3:x} of ${2:available}"
+                     class="background card container elevated clickable"
+                     cdkDrag">
+                <div class="drag-placeholder" *cdkDragPlaceholder></div>
+                <p>{{${4:x.display}}}</p>
+            </section>
+        </section>
+    </section>
+    <section fxLayout="column"
+             fxLayoutAlign="start stretch"
+             fxFlex
+             [style.margin-right.px]="4">
+        <p class="mat-title">${5:Assigned}</p>
+        <section cdkDropList
+                 #selected="cdkDropList"
+                 [cdkDropListData]="${6:assigned}"
+                 [cdkDropListConnectedTo]="[list]"
+                 class="container drop-container"
+                 (cdkDropListDropped)="drop($event)">
+            <section *ngFor="let ${7:y} of ${6:assigned}"
+                     class="background card container elevated clickable"
+                     cdkDrag">
+                <div class="drag-placeholder" *cdkDragPlaceholder></div>
+                <p>{{${8:y.display}}}</p>
+            </section>
+        </section>
+    </section>
+</section>
+```
+
+#### Angular Style Anatomy  
+[Back to Top](#contents)  
+
+**Drag and Drop Selector**  
+
+`dna.dnd-selector`  
+
+> No parameters  
+
+```css
+.drop-container {
+    border: dotted 1px #ccc;
+    min-height: 50px;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drop-container.cdk-drop-list-dragging .drop-container:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drag-placeholder {
+    background: #eee;
+    border: dotted 1px #ccc;
+    min-height: 50px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-preview {
+    font-family: 'Roboto';
+    background-color: rgba(247, 247, 247, .7);
+}
 ```

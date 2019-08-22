@@ -35,3 +35,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 * `dna.mat-tab-nav` - HTML
 
 > See updated [README](./readme.md) for details
+
+## 0.0.3
+
+**Added** new snippets as follows:
+
+* `dna.dnd-selector` - TypeScript
+* `dna.dnd-selector` - HTML
+* `dna.dnd-selector` - CSS
+
+> See updated [README](./readme.md) for details

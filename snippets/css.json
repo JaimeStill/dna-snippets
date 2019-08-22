@@ -1,0 +1,31 @@
+{
+    "Drag and Drop Selector": {
+        "prefix": [ "dna.dnd-selector" ],
+        "body": [
+            ".drop-container {",
+                "\tborder: dotted 1px #ccc;",
+                "\tmin-height: 50px;",
+            "}",
+            "",
+            ".cdk-drag-animating {",
+                "\ttransition: transform 250ms cubic-bezier(0, 0, 0.2, 1);",
+            "}",
+            "",
+            ".drop-container.cdk-drop-list-dragging .drop-container:not(.drag-placeholder) {",
+                "\ttransition: transform 250ms cubic-bezier(0, 0, 0.2, 1);",
+            "}",
+            "",
+            ".drag-placeholder {",
+                "\tbackground: #eee;",
+                "\tborder: dotted 1px #ccc;",
+                "\tmin-height: 50px;",
+                "\ttransition: transform 250ms cubic-bezier(0, 0, 0.2, 1);",
+            "}",
+            "",
+            ".cdk-drag-preview {",
+                "\tfont-family: 'Roboto';",
+                "\tbackground-color: rgba(247, 247, 247, .7);",
+            "}"
+        ]
+    }
+}
