@@ -4,9 +4,21 @@ All notable changes to the "dna-snippets" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## 0.0.1
+## 0.0.4  
 
-* Initial release
+**Fixed**:
+
+* `dna.dnd-route` - Missing quotations and comma in `@Component` metadata.
+
+## 0.0.3
+
+**Added** new snippets as follows:
+
+* `dna.dnd-selector` - TypeScript
+* `dna.dnd-selector` - HTML
+* `dna.dnd-selector` - CSS
+
+> See updated [README](./readme.md) for details
 
 ## 0.0.2  
 
@@ -36,12 +48,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 > See updated [README](./readme.md) for details
 
-## 0.0.3
+## 0.0.1
 
-**Added** new snippets as follows:
-
-* `dna.dnd-selector` - TypeScript
-* `dna.dnd-selector` - HTML
-* `dna.dnd-selector` - CSS
-
-> See updated [README](./readme.md) for details
+* Initial release
