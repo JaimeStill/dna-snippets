@@ -4,6 +4,14 @@ All notable changes to the "dna-snippets" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 0.0.5
+
+**Added** new snippet as follows:
+
+* `dna.ctl-get-routed` - C#  
+
+> See updated [README](./readme.md) for details
+
 ## 0.0.4  
 
 **Fixed**:

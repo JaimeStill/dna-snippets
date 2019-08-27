@@ -39,6 +39,7 @@ Middleware Class | `dna.mw-class` | C#
 Middleware Extension | `dna.mw-extension` | C#
 Controller Class | `dna.ctl-class` | C#
 Controller Get Method | `dna.ctl-get` | C#
+Controller Get Method Routed | `dna.ctl-get-routed` | C#
 Controller Post Method | `dna.ctl-post` | C#
 Controller Upload Method | `dna.ctl-upload` | C#
 SignalR Hub Class | `dna.sgl-hub` | C#
@@ -322,6 +323,21 @@ Parameters:
 ```cs
 [HttpGet("[action]")]
 public async Task<${1:T}> ${2:Get}() => await db.${2:Get}();
+```
+
+**Controller Get Method Routed**
+
+`dna.ctl-get-routed`
+
+Parameters:
+* `param` - Routed parameter name
+* `T` - Action method return type
+* `Get` - Action method name
+* `type` - Type of the routed parameter
+
+```cs
+[HttpGet("[action]/{${1:param}}")]
+public async Task<${2:T}> ${3:Get}([FromRoute]${4:type} ${1:param}) => await db.${3:Get}(${1:param});
 ```
 
 **Controller Post Method**  
