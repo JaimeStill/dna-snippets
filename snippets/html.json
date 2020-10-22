@@ -16,7 +16,7 @@
     "Card Shell": {
         "prefix": [ "dna.card-shell" ],
         "body": [
-            "<section class=\"background card ${1:elevated}\" fxLayout=\"${2:layout}\" fxLayoutAlign=\"${3:align}\">",
+            "<section class=\"${1:background card elevated}\" fxLayout=\"${2:layout}\" fxLayoutAlign=\"${3:align}\">",
                 "\t$0",
             "</section>"
         ]
@@ -24,7 +24,7 @@
     "Flex Container": {
         "prefix": [ "dna.flex-container" ],
         "body": [
-            "<section fxLayout=\"${1:layout}\" fxLayoutAlign=\"${2:align}\" class=\"container\">",
+            "<section fxLayout=\"${1:layout}\" fxLayoutAlign=\"${2:align}\" class=\"${3:container}\">",
                 "\t$0",
             "</section>"
         ]
@@ -32,7 +32,7 @@
     "Async Container": {
         "prefix": [ "dna.async-container" ],
         "body": [
-            "<ng-container *ngIf=\"${1:stream} | async as ${2:data} else loading\">",
+            "<ng-container *ngIf=\"${1:stream} | async as ${2:data} else ${3:loading}\">",
                 "\t$0",
             "</ng-container>"
         ]
@@ -40,8 +40,8 @@
     "Loading Template": {
         "prefix": [ "dna.loading-template" ],
         "body": [
-            "<ng-template #loading>",
-                "\t<mat-progress-bar mode=\"${1:indeterminate}\" color=\"${2:accent}\"></mat-progress-bar>",
+            "<ng-template #${1:loading}>",
+                "\t<mat-progress-bar mode=\"${2:indeterminate}\" color=\"${3:accent}\"></mat-progress-bar>",
             "</ng-template>"
         ]
     },
@@ -53,6 +53,17 @@
     },
     "Material Select": {
         "prefix": [ "dna.mat-select" ],
+        "body": [
+            "<mat-form-field>",
+                "\t<mat-label>${1:Label}</mat-label>",
+                "\t<mat-select [(ngModel)]=\"${2:model}\">",
+                    "\t\t<mat-option *ngFor=\"let ${3:o} of ${4:data}\" [value]=\"${5:val}\">{{${6:display}}}</mat-option>",
+                "\t</mat-select>",
+            "</mat-form-field>"
+        ]
+    },
+    "Material Select With Change": {
+        "prefix": [ "dna.mat-select-change" ],
         "body": [
             "<mat-form-field>",
                 "\t<mat-label>${1:Label}</mat-label>",

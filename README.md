@@ -29,8 +29,12 @@ In this documentation, fillable snippet sections are identified using the same c
 Type | Name | FileType
 -----|------|---------
 Entity Class | `dna.ent-class` | C#
+DbSet Property | `dna.ent-dbset` | C#
+Entity KeyMap | `dna.ent-keymap | C#
 Extension Class | `dna.ext-class` | C#
+Extension Baseline | `dna.ext-base` | C#
 Extension Method | `dna.ext-method` | C#
+Extension Query Method | `dna.ext-query` | C#
 Extension Get Method | `dna.ext-get` | C#
 Extension Entity Method | `dna.ext-entity` | C#
 Extensions Validate Method | `dna.ext-validate` | C#
@@ -38,6 +42,8 @@ Extensions Validate Async Method | `dna.ext-validate-async` | C#
 Middleware Class | `dna.mw-class` | C#
 Middleware Extension | `dna.mw-extension` | C#
 Controller Class | `dna.ctl-class` | C#
+Controller Baseline | `dna.ctl-base` | C#
+Controller Query Method | `dna.ctl-query` | C#
 Controller Get Method | `dna.ctl-get` | C#
 Controller Get Method Routed | `dna.ctl-get-routed` | C#
 Controller Post Method | `dna.ctl-post` | C#
@@ -52,6 +58,8 @@ Type | Name | FileType
 -----|------|---------
 Model Interface | `dna.model` | TypeScript
 Service Class | `dna.service` | TypeScript
+Data Source | `dna.source` | TypeScript
+Service API | `dna.api` | TypeScript
 Service Http Function | `dna.http-func` | TypeScript
 Service Http Promise | `dna.http-promise` | TypeScript
 SignalR Service Class | `dna.sgl-service` | TypeScript
@@ -76,6 +84,7 @@ Async Container | `dna.async-container` | HTML
 Loading Template | `dna.loading-template` | HTML
 Searchbar | `dna.searchbar` | HTML
 Material Select | `dna.mat-select` | HTML
+Material Select Change | `dna.mat-select-change` | HTML
 Material Input | `dna.mat-input` | HTML
 Material Input Template Reference Variable | `dna.mat-input-trv` | HTML
 Material Textarea | `dna.mat-textarea` | HTML
@@ -107,14 +116,40 @@ namespace ${1:Project}.Data.Entities
 {
     public class ${2:Entity}
     {
-        public int Id { get; set; }
-        
+        public int Id { get; set; }        
         // ENTRY POINT
-
-        public DateTime CreatedDate { get; set; }
-        public bool IsDeleted { get; set; }
     }
 }
+```
+
+**DbSet Property**
+
+`dna.ent-dbset`
+
+Parameters:  
+* `T` - Entity type
+* `Plural` - Pluralized entity name
+
+```cs
+public DbSet<${1:T}> ${2:Plural} { get; set; }
+```
+
+**Entity Key Map**
+
+`dna.ent-keymap`
+
+Parameters:  
+* `T` - Entity type
+* `Many` - Many-sided property name
+
+```cs
+modelBuilder
+    .Entity<${1:T}>()
+    .HasMany(x => x.${2:Many})
+    .WithOne(x => x.${1:T})
+    .HasForeignKey(x => x.${1:T}Id)
+    .IsRequired()
+    .OnDelete(DeleteBehavior.Restrict);
 ```
 
 **Extension Class**  
@@ -130,13 +165,118 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
+
+using ${1:Project}.Core;
+using ${1:Project}.Core.ApiQuery;
 using ${1:Project}.Data.Entities;
 
 namespace ${1:Project}.Data.Extensions
 {
     public static class ${2:Entity}Extensions
     {
+        // ENTRY POINT
+    }
+}
+```
+
+**Extension Class Baseline**
+
+`dna.ext-base`
+
+Parameters:
+* `Project` - Project namespace root
+* `Singular` - Singular capitalized entity name
+* `plural` - Pluralized lowercased entity name
+* `Prop` - Initial search property for Search / Validate extension methods
+* `Plural` - Pluralized capitalized entity name
+* `singular` - Singular lowercased entity name
+* `prop` - Lowercased property name for exception message
+
+```cs
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
+
+using ${1:Project}.Core;
+using ${1:Project}.Core.ApiQuery;
+using ${1:Project}.Data.Entities;
+
+namespace ${1:Project}.Data.Extensions
+{
+    public static class ${2:Singular}Extensions
+    {
+        static IQueryable<${2:Singular}> Search(this IQueryable<${2:Singular}> ${3:plural}, string search) =>
+            ${3:plural}.Where(x => x.${4:Prop}.ToLower().Contains(search.ToLower()));
+
+        public static async Task<QueryResult<${2:Singular}>> Query${5:Plural}(
+            this AppDbContext db,
+            string page,
+            string pageSize,
+            string search,
+            string sort
+        ) {
+            var container = new QueryContainer<${2:Singular}>(
+                db.${5:Plural},
+                page, pageSize, search sort
+            );
+
+            return await container.Query((${3:plural}, s) => ${3:plural}.Search(s));
+        }
+
+        public static async Task<${2:Singular}> Get${2:Singular}(this AppDbCOntext db, int id) =>
+            await db.${5:Plural}
+                .FindAsync(id);
+
+        public static async Task Add${2:Singular}(this AppDbCOntext db, ${2:Singular} ${6:singular})
+        {
+            if (await ${6:singular}.Validate(db))
+            {
+                await db.${5:Plural}.AddAsync(${6:singular});
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public static async Task Update${2:Singular}(this AppDbContext db, ${2:Singular} ${6:singular})
+        {
+            if (await ${6:singular}.Validate(db))
+            {
+                db.${5.Plural}.Update(${6:singular});
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public static async Task Remove${2:Singular}(this AppDbContext db, ${2:Singular} ${6:singular})
+        {
+            db.${5:Plural}.Remove(${6:singular});
+            await db.SaveChangesAsync();
+        }
+
+        static async Task<bool> Validate(this ${2:Singular} ${6:singular}, AppDbContext db)
+        {
+            if (string.IsNullOrEmpty(${6:singular}.${4:Prop}))
+            {
+                throw new AppException("${2:Singular} must have a ${7:prop}", ExceptionType.Validation);
+            }
+
+            var check = await db.${5:Plural}
+                .FirstOrDefaultAsync(x =>
+                    x.Id != ${6:singular}.Id &&
+                    x.${4:Prop}.ToLower() == ${6:singular}.${4:Prop}.ToLower()
+                );
+
+            if (check != null)
+            {
+                throw new AppException($"{${6:singular}.${4:Prop}} is already a ${2:Singular}", ExceptionType.Validation);
+            }
+            
+            return true;
+        }
+
         // ENTRY POINT
     }
 }
@@ -156,6 +296,32 @@ Parameters:
 public static async Task ${1:Method}(this ${2:T} ${3:arg})
 {
     // ENTRY POINT
+}
+```
+
+**Extension Query Method**
+
+`dna.ext-query`
+
+Parameters:  
+* `T`: Entity type
+* `Plural`: Pluralized capitalized entity name
+* `plural`: Pluralized lowercase entity name
+
+```cs
+public static async Task<QueryResult<${1:T}>> Query${2:Plural}(
+    this AppDbContext db,
+    string page,
+    string pageSize,
+    string search,
+    string sort
+) {
+    var container = new QueryContainer<${1:T}>(
+        db.${2:Plural}/* ENTRY POINT */,
+        page, pageSize, search, sort
+    );
+
+    return await container.Query((${3:plural}, s) => ${3:plural}.Search(s));
 }
 ```
 
@@ -290,7 +456,9 @@ Parameters:
 ```cs
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
+
 using ${1:Project}.Data;
 using ${1:Project}.Data.Entities;
 using ${1:Project}.Data.Extensions;
@@ -308,6 +476,62 @@ namespace ${1:Project}.Web.Controllers
         }
 
         // ENTRY POINT
+    }
+}
+```
+
+**Controller Class Baseline**
+
+`dna.ctl-base`
+
+Parameters:  
+* `Project` - Project namespace name
+* `Singular` - Singular capitalized entity name
+* `Plural` - Pluralized capitalized entity name
+* `singular` - Singular lowercase entity name
+
+```cs
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Mvc;
+
+using ${1:Project}.Data;
+using ${1:Project}.Data.Entities;
+using ${1:Project}.Data.Extensions;
+
+namespace ${1:Project}.Web.Controllers
+{
+    [Route("api/[controller]")]
+    public class ${2:Singular}Controller : Controller
+    {
+        private AppDbContext db;
+
+        public ${2:Singular}Controller(AppDbContext db)
+        {
+            this.db = db;
+        }
+
+        [HttpGet("[action]")]
+        [ProducesResponseType(typeof(QueryResult<${2:Singular}>), 200)]
+        public async Task<IActionResult> Query${3:Plural}(
+            [FromQuery]string page,
+            [FromQuery]string pageSize,
+            [FromQuery]string search,
+            [FromQuery]string sort
+        ) => Ok(await db.Query${3:Plural}(page, pageSize, search, sort));
+
+        [HttpGet("[action]/{id}")]
+        public async Task<${2:Singular}> Get${2:Singular}([FromRoute]int id) => await db.Get${2:Singular}(id);
+
+        [HttpPost("[action]")]
+        public async Task Add${2:Singular}([FromBody]${2:Singular} ${4:singular}) => await db.Add${2:Singular}(${4:singular});
+
+        [HttpPost("[action]")]
+        public async Task Update${2:Singular}([FromBody]${2:Singular} ${4:singular}) => await db.Update${2:Singular}(${4:singular});
+
+        [HttpPost("[action]")]
+        public async Task Remove${2:Singular}([FromBody]${2:Singular} ${4:singular}) => await db.Remove${2:Singular}(${4:singular});
     }
 }
 ```
@@ -391,13 +615,6 @@ namespace ${1:Project}.Web.Hubs
 {
     public class ${2:Data}Hub : Hub
     {
-        public override async Task OnDisconnectedAsync(Exception ex)
-        {
-            // Manage client disconnect
-
-            await base.OnDisconnectedAsync(ex);
-        }
-
         // ENTRY POINT
     }
 }
@@ -432,11 +649,9 @@ Parameters:
 * `Model` - Interface name, PascalCase
 
 ```ts
-export interface INTERFACE {
+export interface ${1:Model} {
     id: number;
     // ENTRY POINT
-    createdDate: Date;
-    isDeleted: boolean;
 }
 ```
 
@@ -445,22 +660,170 @@ export interface INTERFACE {
 `dna.service`  
 
 Parameters:
-* `Object` - Service name, PascalCase
+* `../../services` - Relative path to library `services` module
+* `../../config` - Relative path to library `config` module
+* `T` - Entity type or service name
 
 ```ts
-import { Injectable } from '@angular/core';
+import {
+    Injectable,
+    Optional
+} from '@angular/core';
+
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
-import { SnackerService } from './snacker.service';
+import { SnackerService } from '${1:../../services}';
+import { ServerConfig } from '${2:../../config}';
 
 @Injectable()
-export class ${1:Object}Service {
+export class ${3:T}Service {
     // ENTRY POINT
 
     constructor(
         private http: HttpClient,
-        private snacker: SnackerService
+        private snacker: SnackerService,
+        @Optional() private config: ServerConfig
     ) { }
+}
+```
+
+**Data Source**
+
+`dna.source`
+
+Parameters:  
+* `Singular` - Entity type capitalized
+* `$2` - Property names to render in a table. Provided as strings in `columns` array.
+* `prop` - Default sorting property name
+* `singular` - Entity type lowercase
+* `Plural` - Pluralized entity name capitalized
+
+```ts
+import {
+    Injectable,
+    Optional
+} from '@angular/core';
+
+import {
+    QueryService,
+    SnackerService
+} from '../../../services';
+
+import { DataSource } from '@angular/cdk/table';
+import { HttpClient } from '@angular/common/http';
+import { ServerConfig } from '../../../config';
+import { ${1:Singular} } from '../../models';
+
+@Injectable()
+export class ${1:Singular}Source extends QueryService<${1:Singular}> implements DataSource<${1:Singular}> {
+    columns = [$2];
+
+    constructor(
+        protected http: HttpClient,
+        protected snacker: SnackerService,
+        @Optional() private config: ServerConfig
+    ) {
+        super(http, snacker);
+        this.sort = {
+            isDescending: false,
+            propertyName: '${3:prop}'
+        };
+
+        this.baseUrl = `${this.config.api}${4:singular}/query${5:Plural}`;
+    }
+
+    track${5:Plural} = (${4:singular}: ${1:Singular}) => ${4:singular}.id;
+}
+```
+
+**Service API**
+
+`dna.api`
+
+Parameters:  
+* `Singular` - Entity name capitalized
+* `singular` - Entity name lowercase
+* `id` - Parameter to allow `id` to be interpolated in the `http.get` string
+* `prop` - Property used in success messages
+
+```ts
+import {
+    Injectable,
+    Optional
+} from '@angular/core';
+
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject} from 'rxjs';
+import { SnackerService } from '../../services';
+import { ServerConfig } from '../../config';
+import { ${1:Singular} } from '../models';
+
+@Injectable()
+export class ${1:Singular}Service {
+    private ${2:singular} = new BehaviorSubject<${1:Singular}>(null);
+    ${2:singular}$ = this.${2:singular}.asObservable();
+
+    constructor(
+        private http: HttpClient,
+        private snacker: SnackerService,
+        @Optional() private config: ServerConfig
+    ) { }
+
+    get${1:Singular} = (id: number): Promise<${1:Singular}> => new Promise((resolve) => {
+        this.http.get<${1:Singular}>(`${this.config.api}${2:singular}/get${1:Singular}/${3:id}`)
+            .subscribe(
+                data => {
+                    this.${2:singular}.next(data);
+                    resolve(data);
+                },
+                err => {
+                    this.snacker.sendErrorMessage(err.error);
+                    resolve(null);
+                }
+            );
+    })
+
+    add${1:Singular} = (${2:singular}: ${1:Singular}): Promise<boolean> => new Promise((resolve) => {
+        this.http.post(`${this.config.api}${2:singular}/add${1:Singular}`, ${2:singular})
+            .subscribe(
+                () => {
+                    this.snacker.sendSuccessMessage(`${${2:singular}.${4.prop}} successfully created`);
+                    resolve(true);
+                },
+                err => {
+                    this.snacker.sendErrorMessage(err.error);
+                    resolve(false);
+                }
+            );
+    })
+
+    update${1:Singular} = (${2:singular}: ${1:Singular}): Promise<boolean> => new Promise((resolve) => {
+        this.http.post(`${this.config.api}${2:singular}/update${1:Singular}`, ${2:singular})
+            .subscribe(
+                () => {
+                    this.snacker.sendSuccessMessage(`${${2:singular}.${4:prop}} successfully updated`);
+                    resolve(true);
+                },
+                err => {
+                    this.snacker.sendErrorMessage(err.error);
+                    resolve(false);
+                }
+            );
+    })
+
+    remove${1:Singular} = (${2:singular}: ${1:Singular}): Promise<boolean> => new Promise((resolve) => {
+        this.http.post(`${this.config.api}${2:singular}/remove${1:Singular}`, ${2:singular})
+            .subscribe(
+                () => {
+                    this.snacker.sendSuccessMessage(`${${2:singular}.${4:prop}} successfully removed`);
+                    resolve(true);
+                },
+                err => {
+                    this.snacker.sendErrorMessage(err.error);
+                    resolve(false);
+                }
+            );
+    })
 }
 ```
 
@@ -929,12 +1292,12 @@ Parameters:
 `dna.card-shell`  
 
 Parameters:
-* `elevated` - Additional classes
+* `background card elevated` - Classes
 * `layout` - Flex layout
 * `align` - Flex layout alignment  
 
 ```html
-<section class="background card ${1:elevated}"
+<section class="${1:background card elevated}"
          fxLayout="${2:layout}"
          fxLayoutAlign="${3:align}">
     <!-- ENTRY POINT -->
@@ -948,11 +1311,12 @@ Parameters:
 Parameters:
 * `layout` - Flex layout
 * `align` - Flex layout alignment  
+* `container` - Classes
 
 ```html
 <section fxLayout="${1:layout}"
          fxLayoutAlign="${2:align}"
-         class="container">
+         class="${3:container}">
     <!-- ENTRY POINT -->
 </section>
 ```
@@ -964,9 +1328,10 @@ Parameters:
 Parameters:
 * `stream` - Stream to subscribe to with the `async` pipe
 * `data` - Resulting value of data resolved by `stream`
+* `loading` - Loading template name
 
 ```html
-<ng-container *ngIf="${1:stream} | async as ${2:data} else loading">
+<ng-container *ngIf="${1:stream} | async as ${2:data} else ${3:loading}">
     <!-- ENTRY POINT -->
 </ng-container>
 ```
@@ -976,13 +1341,14 @@ Parameters:
 `dna.loading-template`  
 
 Parameters:
+* `loading` - Loading template reference variable name
 * `indeterminate` - MatProgressBar mode
 * `accent` - Material theme color
 
 ```html
-<ng-template #loading>
-    <mat-progress-bar mode="${1:indeterminate}"
-                      color="${2:accent}"></mat-progress-bar>
+<ng-template #${1:loading}>
+    <mat-progress-bar mode="${2:indeterminate}"
+                      color="${3:accent}"></mat-progress-bar>
 </ng-template>
 ```
 
@@ -1008,6 +1374,30 @@ Parameters:
 **Material Select**
 
 `dna.mat-select`  
+
+Parameters:
+* `Label` - Select label
+* `model` - Data binding target for the select element
+* `o` - Variable representing a single option from a collection of objects
+* `data` - A collection of objects to iterate when populating select options
+* `val` - Value that a select option represents from the `o` variable
+* `display` - Property / Properties to display from the `o` variable in the select list  
+
+```html
+<mat-form-field>
+    <mat-label>${1:Label}</mat-label>
+    <mat-select [(ngModel)]="${2:model}">
+        <mat-option *ngFor="let ${3:o} of ${4:data}"
+                    [value]="${5:val}">
+            {{${6:display}}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+```
+
+**Material Select Change**
+
+`dna.mat-select-change`  
 
 Parameters:
 * `Label` - Select label

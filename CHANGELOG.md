@@ -4,6 +4,32 @@ All notable changes to the "dna-snippets" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 0.0.6
+
+**Added** new snippets as follows:
+
+* `dna.ent-dbset` - C#
+* `dna.ent-keymap` - C#
+* `dna.ext-base` - C#
+* `dna.ext-query` - C#
+* `dna.ctl-base` - C#
+* `dna.ctl-query` - C#
+* `dna.mat-select-change` - HTML
+* `dna.api` - TypeScript
+* `dna.source` - TypeScript
+
+**Modified**:
+
+* `dna.ent-class` - Remove all but `Id` as default property.
+* `dna.sgl-hub` - Remove default `OnDisconnect` registration.
+* `dna.card-shell` - Make all classes part of snippet parameter.
+* `dna.flex-container` - Make class parameterized.
+* `dna.async-container` - Parameterize `loading` template.
+* `dna.loading-template` - Parameterize `loading` template reference variable.
+* `dna.mat-select` - Remove `selectionChange` event binding.
+* `dna.model` - Remove all but `id` as default property.
+* `dna.service` - Update to reflect library layout and parameterize services / config directory paths.
+
 ## 0.0.5
 
 **Added** new snippet as follows:
