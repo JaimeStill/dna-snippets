@@ -30,7 +30,7 @@ Type | Name | FileType
 -----|------|---------
 Entity Class | `dna.ent-class` | C#
 DbSet Property | `dna.ent-dbset` | C#
-Entity KeyMap | `dna.ent-keymap | C#
+Entity KeyMap | `dna.ent-keymap` | C#
 Extension Class | `dna.ext-class` | C#
 Extension Baseline | `dna.ext-base` | C#
 Extension Method | `dna.ext-method` | C#

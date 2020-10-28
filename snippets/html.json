@@ -136,6 +136,15 @@
             "<router-outlet></router-outlet>"
         ]
     },
+    "Material Route Tab": {
+        "prefix": [ "dna.mat-route-tab" ],
+        "body": [
+            "<a mat-tab-link routerLink=\"${1:link}\" routerLinkActive=\"${3:active}\">",
+                "\t${3:Label}",
+            "</a>",
+            "$0"
+        ]
+    },
     "Drag and Drop Selector": {
         "prefix": [ "dna.dnd-selector" ],
         "body": [

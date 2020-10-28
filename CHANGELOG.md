@@ -4,6 +4,19 @@ All notable changes to the "dna-snippets" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 0.0.8
+
+Add missing backtick in README.
+
+**Added** new snippets as follows:  
+
+* `dna.mat-route-tab` - HTML
+
+**Modified**:  
+
+* `dna.route` - TypeScript - Adjust to the convention that route components no longer use the `Component` segment of their name. For instance, `HomeComponent` should now be `HomeRoute` and should have the files `home.route.ts` and `home.route.html`.
+* `dna.dialog` - TypeScript - Correct `import` statement for `MatDialogRef` and `MAT_DIALOG_DATA` to `@angular/material/dialog`.
+
 ## 0.0.7
 
 No changes beyond version number.
