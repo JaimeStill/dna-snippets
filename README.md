@@ -92,6 +92,7 @@ Material Slider | `dna.mat-slider` | HTML
 Material Slide Toggle | `dna.mat-slide-toggle` | HTML
 Material Menu | `dna.mat-menu` | HTML
 Material Tab Nav | `dna.mat-tab-nav` | HTML
+Material Route Tab | `dna.mat-route-tab` | HTML
 Drag and Drop Selector | `dna.dnd-selector` | HTML
 Drag and Drop Selector | `dna.dnd-selector` | CSS
 
@@ -1556,6 +1557,23 @@ Parameters:
     <!-- ENTRY POINT -->
 </nav>
 <router-outlet></router-outlet>
+```
+
+**Material Route Tab**
+
+`dna.mat-route-tab`
+
+Parameters:
+* `link` - Initial tab link
+* `active` - Initial tab active class
+* `Label` - Initial tab label
+
+```html
+<a mat-tab-link
+   routerLInk="${1:link}"
+   routerLinkActive="${3:active}">
+  ${3:Label}
+</a>
 ```
 
 **Drag and Drop Selector**  
