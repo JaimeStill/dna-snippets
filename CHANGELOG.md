@@ -4,6 +4,27 @@ All notable changes to the "dna-snippets" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 0.1.0
+
+**Added** new snippets as follows:
+
+* `dna.rx-model` - TypeScript
+* `dna.mat-datepicker` - HTML
+* `dna.rx-checkbox` - HTML
+* `dna.rx-datepicker` - HTML
+* `dna.rx-input` - HTML
+* `dna.rx-radio` - HTML
+* `dna.rx-select` - HTML
+* `dna.rx-select-change` - HTML
+* `dna.rx-slide-toggle` - HTML
+* `dna.rx-slider` - HTML
+* `dna.rx-textarea` - HTML
+
+**Modified**:
+
+* `dna.mat-route-tab` - HTML - Fixed incorrect tab stop sequence.
+* `dna.dialog` and `dna.dnd-selector` - HTML - Changed `mat-button` to `mat-stroked-button`.
+
 ## 0.0.9
 
 **Added** new snippets as follows:  

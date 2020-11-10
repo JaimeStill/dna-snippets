@@ -8,7 +8,7 @@
                     "\t\t$0",
                 "\t</mat-dialog-content>",
                 "\t<mat-dialog-actions>",
-                    "\t\t<button mat-button mat-dialog-close>Cancel</button>",
+                    "\t\t<button mat-stroked-button mat-dialog-close>Cancel</button>",
                 "\t</mat-dialog-actions>",
             "</div>"
         ]
@@ -100,6 +100,17 @@
             "</mat-form-field>"
         ]
     },
+    "Material Datepicker": {
+        "prefix": [ "dna.mat-datepicker" ],
+        "body": [
+            "<mat-form-field>",
+                "\t<mat-label>${1:Label}</mat-label>",
+                "\t<input [(ngModel)]=\"${2:model}\" matInput [matDatepicker]=\"${3:picker}\">",
+                "\t<mat-datepicker-toggle matSuffix [for]=\"${3:picker}\"></mat-datepicker-toggle>",
+                "\t<mat-datepicker #${3:picker}></mat-datepicker",
+            "</mat-form-field>"
+        ]
+    },
     "Material Slider": {
         "prefix": [ "dna.mat-slider" ],
         "body": [
@@ -139,7 +150,7 @@
     "Material Route Tab": {
         "prefix": [ "dna.mat-route-tab" ],
         "body": [
-            "<a mat-tab-link routerLink=\"${1:link}\" routerLinkActive=\"${3:active}\">",
+            "<a mat-tab-link routerLink=\"${1:link}\" routerLinkActive=\"${2:active}\">",
                 "\t${3:Label}",
             "</a>",
             "$0"
@@ -148,7 +159,7 @@
     "Drag and Drop Selector": {
         "prefix": [ "dna.dnd-selector" ],
         "body": [
-            "<button mat-button [disabled]=\"pending\" [style.margin.px]=\"8\" (click)=\"save.emit(${6:assigned})\">",
+            "<button mat-stroked-button [disabled]=\"pending\" [style.margin.px]=\"8\" (click)=\"save.emit(${6:assigned})\">",
                 "\tSave",
             "</button>",
             "<section fxLayout=\"row | wrap\" fxLayoutAlign=\"start start\">",
@@ -171,6 +182,88 @@
                     "\t\t</section>",
                 "\t</section>",
             "</section>"
+        ]
+    },
+    "Reactive Checkbox": {
+        "prefix": ["dna.rx-checkbox"],
+        "body": [
+            "<mat-checkbox formControlName=\"${1:control}\" [indeterminate]=\"${2:true}\">${3:Label}</mat-checkbox>"
+        ]
+    },
+    "Reactive Datepicker": {
+        "prefix": ["dna.rx-datepicker"],
+        "body": [
+            "<mat-form-field>",
+                "\t<mat-label>${1:Label}</mat-label>",
+                "\t<input formControlName=\"${2:control}\" matInput [matDatepicker]=\"${3:picker}\">",
+                "\t<mat-datepicker-toggle matSuffix [for]=\"${3:picker}\"></mat-datepicker-toggle>",
+                "\t<mat-datepicker #${3:picker}></mat-datepicker>",
+            "</mat-form-field>"
+        ]
+    },
+    "Reactive Input": {
+        "prefix": ["dna.rx-input"],
+        "body": [
+            "<mat-form-field>",
+                "\t<mat-label>${1:Label}</mat-label>",
+                "\t<input formControlName=\"${2:control}\" matInput>",
+            "</mat-form-field>"
+        ]
+    },
+    "Reactive Radio": {
+        "prefix": ["dna.rx-radio"],
+        "body": [
+            "<label>${1:Label}</label>",
+            "<mat-radio-group formControlName=\"${2:control}\" fxLayout=\"${3:column}\" fxLayoutGap=\"${4:8px}\">",
+                "\t<mat-radio-button *ngFor=\"let ${5:opt} of ${6:data}\" [value]=\"${7:value}\">{{${8:display}}}</mat-radio-button>",
+            "</mat-radio-group>"
+        ]
+    },
+    "Reactive Select": {
+        "prefix": ["dna.rx-select"],
+        "body": [
+            "<mat-form-field>",
+                "\t<mat-label>${1:Label}</mat-label>",
+                "\t<mat-select formControlName=\"${2:control}\">",
+                    "\t\t<mat-option *ngFor=\"let ${3:opt} of ${4:data}\" [value]=\"${5:value}\">{{${6:display}}}</mat-option>",
+                "\t</mat-select>",
+            "</mat-form-field>"
+        ]
+    },
+    "Reactive Select Change": {
+        "prefix": ["dna.rx-select-change"],
+        "body": [
+            "<mat-form-field>",
+                "\t<mat-label>${1:Label}</mat-label>",
+                "\t<mat-select formControlName=\"${2:control}\" (selectionChange)=\"${3:changeFunction()}\">",
+                    "\t\t<mat-option *ngFor=\"let ${4:opt} of ${5:data}\" [value]=\"${6:value}\">{{${7:display}}}</mat-option>",
+                "\t</mat-select>",
+            "</mat-form-field>"
+        ]
+    },
+    "Reactive Slide Toggle": {
+        "prefix": ["dna.rx-slide-toggle"],
+        "body": [
+            "<mat-slide-toggle formControlName=\"${1:control}\">${2:Label}</mat-slide-toggle>"
+        ]
+    },
+    "Reactive Slider": {
+        "prefix": ["dna.rx-slider"],
+        "body": [
+            "<section fxLayout=\"row\" fxLayoutAlign=\"start center\" fxLayoutGap=\"${1:8px}\">",
+                "\t<span>${2:Label}</span>",
+                "\t<mat-slider formControlName=\"${3:control}\" [min]=\"${4:min}\" [max]=\"${5:max}\" [step]=\"${6:step}\" [thumbLabel]=\"${7:true}\"></mat-slider>",
+                "\t<span>{{${8:value}}}</span>",
+            "</section>"
+        ]
+    },
+    "Reactive Textarea": {
+        "prefix": ["dna.rx-textarea"],
+        "body": [
+            "<mat-form-field>",
+                "\t<mat-label>${1:Label}</mat-label>",
+                "\t<textarea formControlName=\"${2:control}\" matInput mat-autosize [matAutosizeMinRows=\"${3:min}\" [matAutosizeMaxRows=\"${4:max}\"></textarea>",
+            "</mat-form-field>"
         ]
     }
 }

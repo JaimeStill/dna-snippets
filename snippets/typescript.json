@@ -8,6 +8,26 @@
             "}"
         ]
     },
+    "Reactive Model Interface": {
+        "prefix": ["dna.rx-model"],
+        "body": [
+            "import {",
+                "\tFormBuilder,",
+                "\tFormGroup,",
+                "\tValidators",
+            "} from '@angular/forms';",
+            "",
+            "export interface ${1:Model} {",
+                "\tid: number;",
+                "\t$0",
+            "}",
+            "",
+            "export const ${1:Model}Form = (${2:model}: ${1:Model}, fb: FormBuilder): FormGroup =>",
+                "\tfb.group({",
+                    "\t\tid: ${2:model}.id",
+                "\t})"
+        ]
+    },
     "Service Class": {
         "prefix": [ "dna.service" ],
         "body": [

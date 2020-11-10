@@ -57,6 +57,7 @@ SignalR Hub Trigger | `dna.sgl-trigger` | C#
 Type | Name | FileType
 -----|------|---------
 Model Interface | `dna.model` | TypeScript
+Reactive Model Interface | `dna.rx-model` | TypeScript
 Service Class | `dna.service` | TypeScript
 Data Source | `dna.source` | TypeScript
 Service API | `dna.api` | TypeScript
@@ -88,12 +89,22 @@ Material Select Change | `dna.mat-select-change` | HTML
 Material Input | `dna.mat-input` | HTML
 Material Input Template Reference Variable | `dna.mat-input-trv` | HTML
 Material Textarea | `dna.mat-textarea` | HTML
+Material Datepicker | `dna.mat-datepicker` | HTML
 Material Slider | `dna.mat-slider` | HTML
 Material Slide Toggle | `dna.mat-slide-toggle` | HTML
 Material Menu | `dna.mat-menu` | HTML
 Material Tab Nav | `dna.mat-tab-nav` | HTML
 Material Route Tab | `dna.mat-route-tab` | HTML
 Drag and Drop Selector | `dna.dnd-selector` | HTML
+Reactive Checkbox | `dna.rx-checkbox` | HTML
+Reactive Datepicker | `dna.rx-datepicker` | HTML
+Reactive Input | `dna.rx-input` | HTML
+Reactive Radio | `dna.rx-radio` | HTML
+Reactive Select | `dna.rx-select` | HTML
+Reactive Select Change | `dna.rx-select-change` | HTML
+Reactive Slide Toggle | `dna.rx-slide-toggle` | HTML
+Reactive Slider | `dna.rx-slider` | HTML
+Reactive Textarea | `dna.rx-textarea` | HTML
 Drag and Drop Selector | `dna.dnd-selector` | CSS
 
 ## Snippet Anatomy
@@ -654,6 +665,32 @@ export interface ${1:Model} {
     id: number;
     // ENTRY POINT
 }
+```
+
+**Reactive Model Interface**
+
+`dna.rx-model`
+
+Parameters:  
+* `Model` - Interface name, PascalCase
+* `model` - Interface name, camelCase
+
+```ts
+import {
+    FormBuilder,
+    FormGroup,
+    Validators
+} from '@angular/forms';
+
+export interface ${1:Model} {
+    id: number,
+    $0
+}
+
+export const ${1:Model}Form = (${2:model}: ${1:Model}, fb: FormBuilder): FormGroup =>
+    fb.group({
+        id: ${2:model}.id
+    })
 ```
 
 **Service Class**  
@@ -1282,7 +1319,7 @@ Parameters:
       <!-- ENTRY POINT -->
     </mat-dialog-content>
     <mat-dialog-actions>
-        <button mat-button
+        <button mat-stroked-button
                 mat-dialog-close>Cancel</button>
     </mat-dialog-actions>
 </div>
@@ -1477,6 +1514,24 @@ Parameters:
 </mat-form-field>
 ```
 
+**Material Datepicker**
+
+`dna.mat-datepicker`
+
+Parameters:  
+* `Label` - Input label
+* `model` - Data binding target for the input element
+* `picker` - Template Reference Variable name for `mat-datepicker`
+
+```html
+<mat-form-field>
+    <mat-label>${1:Label}</mat-label>
+    <input [(ngModel)]="${2:model}" matInput [matDatepicker]="${3:picker}">
+    <mat-datepicker-toggle matSuffix [for]="${3:picker}"></mat-datepicker-toggle>
+    <mat-datepicker #${3:picker}></mat-datepicker>
+</mat-form-field>
+```
+
 **Material Slider**  
 
 `dna.mat-slider`  
@@ -1591,7 +1646,7 @@ Parameters:
 * `y.display` - Property to display for `y`  
 
 ```html
-<button mat-button
+<button mat-stroked-button
         [disabled]="pending"
         [style.margin.px]="8"
         (click)="save.emit(${6:assigned})">
@@ -1638,6 +1693,167 @@ Parameters:
         </section>
     </section>
 </section>
+```
+
+**Reactive Checkbox**
+
+`dna.rx-checkbox`
+
+Parameters:  
+* `control` - Form control name
+* `true` - Indeterminate value
+* `Label` - Checkbox label
+
+```html
+<mat-checkbox formControlName="${1:control}" [indeterminate]="${2:true}">${3:Label}</mat-checkbox>
+```
+
+**Reactive Datepicker**
+
+`dna.rx-datepicker`
+
+Parameters:  
+* `Label` - Input label
+* `control` - Form control name
+* `picker` - Template Reference Variable for `mat-datepicker`
+
+```html
+<mat-form-field>
+    <mat-label>${1:Label}</mat-label>
+    <input formControlName="${2:control}" matInput [matDatepicker]="${3:picker}">
+    <mat-datepicker-toggle matSuffix [for]="${3:picker}"></mat-datepicker-toggle>
+    <mat-datepicker #${3:picker}></mat-datepicker>
+</mat-form-field>
+```
+
+**Reactive Input**
+
+`dna.rx-input`
+
+Parameters:  
+* `Label` - Input label
+* `control` - Form control name
+
+```html
+<mat-form-field>
+    <mat-label>${1:Label}</mat-label>
+    <input formControlName="${2:control}" matInput>
+</mat-form-field>
+```
+
+**Reactive Radio**
+
+`dna.rx-radio`
+
+Parameters:  
+* `Label` - Input label
+* `control` - Form control name
+* `column` - Flex layout alignment (`column` or `row`)
+* `8px` - Flex layout gap
+* `opt` - Iteration variable for the `data` collection
+* `data` - Collection of data for the radio group
+* `value` - Value each radio button represents
+* `display` - Value to display for each radio button label
+
+```html
+<label>${1:Label}</label>
+<mat-radio-group formControlName="${2:control}" fxLayout="${3:column}" fxLayoutGap="${4:8px}">
+    <mat-radio-button *ngFor="let ${5:opt} of ${6:data}" [value]="${7:value}">{{${8:display}}}</mat-radio-button>
+</mat-radio-group>
+```
+
+**Reactive Select**
+
+`dna.rx-select`
+
+Parameters:  
+* `Label` - Input label
+* `control` - Form control name
+* `opt` - Iteration variable for the `data` collection
+* `data` - Collection of data for the select options
+* `value` - Value each option represents
+* `display` - Value to display for each option
+
+```html
+<mat-form-field>
+    <mat-label>${1:Label}</mat-label>
+    <mat-select formControlName="${2:control}">
+        <mat-option *ngFor="let ${3:opt} of ${4:data}" [value]="${5:value}">{{${6:display}}}</mat-option>
+    </mat-select>
+</mat-form-field>
+```
+
+**Reactive Select Change**
+
+`dna.rx-select-change`
+
+Parameters:  
+* `Label` - Input label
+* `control` - Form control name
+* `changeFunction()` - Function to execute when the selection is changed
+* `opt` - Iteration variable for the `data` collection
+* `data` - Collection of data for the select options
+* `value` - Value each option represents
+* `display` - Value to display for each option
+
+```html
+<mat-form-field>
+    <mat-label>${1:Label}</mat-label>
+    <mat-select formControlName="${2:control}" (selectionChange)="${3:changeFunction()}">
+        <mat-option *ngFor="let ${4:opt} of ${5:data}" [value]="${6:value}">{{${7:display}}}</mat-option>
+    </mat-select>
+</mat-form-field>
+```
+
+**Reactive Slide Toggle**
+
+`dna.rx-slide-toggle`
+
+Parameters:  
+* `control` - Form control name
+* `Label` - Slide toggle label
+
+```html
+<mat-slide-toggle formControlName="${1:control}">${2:Label}</mat-slide-toggle>
+```
+
+**Reactive Slider**
+
+`dna.rx-slider`
+
+Parameters:  
+* `8px` - Layout gap for contained elements
+* `Label` - Slider label
+* `control` - Form control name
+* `min` - Slider min value
+* `max` - Slider max value
+* `step` - Interval of change
+* `true` - Whether or not to render the thumb label
+* `value` - Property that displays the value held by the slider
+
+```html
+<section fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="${1:8px}">
+    <span>${2:Label}</span>
+    <mat-slider formControlName="${3:control}" [min]="${4:min}" [max]="${5:max}" [step]="${6:step}" [thumbLabel]="${7:true}"></mat-slider>
+    <span>{{${8:value}}}</span>
+</section>
+```
+
+**Reactive Textarea**
+
+`dna.rx-textarea`
+
+Parameters:  
+* `Label` - Textarea label
+* `control` - Form control name
+* `min` - Min textarea rows
+* `max` - Max textarea rows
+
+```html
+<mat-form-field>
+    <mat-label>${1:Label}</mat-label>
+    <textarea formControlName="${2:control}" matInput mat-autosize [matAutosizeMinRows]="${3:min}" [matAutosizeMaxRows]="${4:max}"></textarea>
+</mat-form-field>
 ```
 
 #### Angular Style Anatomy  
